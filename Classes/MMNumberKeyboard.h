@@ -35,15 +35,6 @@ FOUNDATION_EXPORT const unsigned char MMNumberKeyboardVersionString[];
 - (BOOL)numberKeyboard:(MMNumberKeyboard *)numberKeyboard shouldInsertText:(NSString *)text;
 
 /**
- *  Asks the delegate if the keyboard should process the pressing of the return button.
- *
- *  @param numberKeyboard The keyboard whose return button was pressed.
- *
- *  @return Returns	@c YES if the keyboard should implement its default behavior for the return button; otherwise, @c NO.
- */
-- (BOOL)numberKeyboardShouldReturn:(MMNumberKeyboard *)numberKeyboard;
-
-/**
  *  Asks the delegate if the keyboard should remove the character just before the cursor.
  *
  *  @param numberKeyboard The keyboard whose return button was pressed.
@@ -87,21 +78,6 @@ typedef NS_ENUM(NSUInteger, MMNumberKeyboardButtonStyle) {
     *  A secondary style button, such as the backspace key.
     */
     MMNumberKeyboardButtonStyleSecondary,
-    
-    /**
-     *  A done style button, for example, a button that completes some task and returns to the previous view.
-     */
-    MMNumberKeyboardButtonStyleDone,
-    
-    /**
-     *  A white style button, such as those for the number keys.
-     */
-    MMNumberKeyboardButtonStyleWhite __attribute__((deprecated)) = MMNumberKeyboardButtonStylePrimary,
-    
-    /**
-     *  A gray style button, such as the backspace key.
-     */
-    MMNumberKeyboardButtonStyleGray __attribute__((deprecated)) = MMNumberKeyboardButtonStyleSecondary,
 };
 
 /**
@@ -133,23 +109,6 @@ typedef NS_ENUM(NSUInteger, MMNumberKeyboardButtonStyle) {
 @property (weak, nonatomic, nullable) id <MMNumberKeyboardDelegate> delegate;
 
 /**
- *  Configures the special key with an image and an action block.
- *
- *  @param image   The image to display in the key.
- *  @param handler A handler block.
- */
-- (void)configureSpecialKeyWithImage:(UIImage *)image actionHandler:(nullable dispatch_block_t)handler;
-
-/**
- *  Configures the special key with an image and a target-action.
- *
- *  @param image  The image to display in the key.
- *  @param target The target object—that is, the object to which the action message is sent.
- *  @param action A selector identifying an action message. It cannot be NULL.
- */
-- (void)configureSpecialKeyWithImage:(UIImage *)image target:(id)target action:(SEL)action;
-
-/**
  *  If @c YES, the decimal separator key will be displayed.
  *
  *  @note The default value of this property is @c NO.
@@ -157,32 +116,11 @@ typedef NS_ENUM(NSUInteger, MMNumberKeyboardButtonStyle) {
 @property (assign, nonatomic) BOOL allowsDecimalPoint;
 
 /**
- *  The visible title of the Return key.
- *
- *  @note The default visible title of the Return key is “Done”.
- */
-@property (copy, nonatomic, null_resettable) NSString *returnKeyTitle;
-
-/**
  *  The preferred keyboard style.
  *
  *  @note The default style for the keyboard is @c MMNumberKeyboardStyleAutomatic.
  */
 @property (assign, nonatomic) MMNumberKeyboardStyle preferredStyle;
-
-/**
- *  The button style of the Return key.
- *
- *  @note The default value of this property is @c MMNumberKeyboardButtonStyleDone.
- */
-@property (assign, nonatomic) MMNumberKeyboardButtonStyle returnKeyButtonStyle;
-
-/**
- *  A value indicating whether the Return key is automatically enabled when the user is entering numbers.
- *
- *  @note The default value for this property is @c NO. If you set it to @c YES, the keyboard disables the Return key when the text entry area contains no text. As soon as the user enters some text, the Return key is automatically enabled.
- */
-@property (assign, nonatomic) BOOL enablesReturnKeyAutomatically;
 
 @end
 

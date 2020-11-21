@@ -28,7 +28,6 @@
 
 + (instancetype)themeForStyle:(MMNumberKeyboardButtonStyle)style
 {
-    static MMKeyboardTheme *doneStyleTheme;
     static MMKeyboardTheme *primaryStyleTheme;
     static MMKeyboardTheme *secondaryStyleTheme;
     
@@ -38,13 +37,6 @@
         UIColor *darkBackgroundSecondary = [UIColor colorWithWhite:0.220 alpha:1.000];
         UIColor *backgroundColorPrimary = [UIColor whiteColor];
         UIColor *backgroundColorSecondary = [UIColor colorWithRed:0.672 green:0.686 blue:0.738 alpha:1.000];
-        
-        // Done:
-        doneStyleTheme = [[self alloc] init];
-        doneStyleTheme->_controlColor = [UIColor whiteColor];
-        doneStyleTheme->_fillColor = [UIColor colorWithRed:0 green:0.479f blue:1 alpha:1];
-        doneStyleTheme->_highlightedControlColor = [UIColor.blackColor MM_colorWithDarkColor:UIColor.whiteColor];
-        doneStyleTheme->_highlightedFillColor = [backgroundColorPrimary MM_colorWithDarkColor:darkBackgroundPrimary];
         
         // Primary:
         primaryStyleTheme = [[self alloc] init];
@@ -65,9 +57,6 @@
             break;
         case MMNumberKeyboardButtonStyleSecondary:
             theme = secondaryStyleTheme;
-            break;
-        case MMNumberKeyboardButtonStyleDone:
-            theme = doneStyleTheme;
             break;
         default:
             [[NSException exceptionWithName:NSInternalInconsistencyException reason:[NSString stringWithFormat:@"The `MMNumberKeyboardButtonStyle` value of (%@) is not supported.", @(style)] userInfo:nil] raise];

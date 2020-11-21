@@ -50,14 +50,6 @@
     self.view.backgroundColor = backgroundColor;
 }
 
-#pragma mark - MMNumberKeyboardDelegate.
-
-- (BOOL)numberKeyboardShouldReturn:(MMNumberKeyboard *)numberKeyboard
-{
-    // Do something with the done key if neeed. Return YES to dismiss the keyboard.
-    return YES;
-}
-
 #pragma mark - Layout.
 
 - (void)viewDidLayoutSubviews
