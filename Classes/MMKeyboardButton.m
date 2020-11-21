@@ -60,6 +60,13 @@
     }
 }
 
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    
+    self.layer.shadowPath = [UIBezierPath bezierPathWithRoundedRect:self.bounds cornerRadius:self.layer.cornerRadius].CGPath;
+}
+
 - (void)_updateButtonAppearance
 {
     const auto MMKeyboardTheme *theme = self.theme;
@@ -82,6 +89,9 @@
     
     CALayer *buttonLayer = [self layer];
     buttonLayer.cornerRadius = (isRounded) ? radius : 0.0f;
+    if (@available(iOS 13.0, *)) {
+        buttonLayer.cornerCurve = kCACornerCurveContinuous;
+    }
     buttonLayer.shadowOpacity = (isRounded) ? 1.0f : 0.0f;
     buttonLayer.shadowColor = theme.shadowColor.CGColor;
     buttonLayer.shadowOffset = CGSizeMake(0, 1.0f);
