@@ -23,7 +23,6 @@ typedef NS_ENUM(NSUInteger, MMNumberKeyboardButton) {
 
 @property (nonatomic, strong) NSDictionary<NSNumber *, MMKeyboardButton *> *buttonDictionary;
 @property (nonatomic, strong) NSMutableArray<UIView *> *separatorViews;
-@property (nonatomic, strong) NSLocale *locale;
 @property (nonatomic, strong) MMTextInputDelegateProxy *keyInputProxy;
 
 @end
@@ -56,11 +55,13 @@ static const CGFloat MMNumberKeyboardRowHeight = 55.0f;
 static const CGFloat MMNumberKeyboardPadBorder = 7.0f;
 static const CGFloat MMNumberKeyboardPadSpacing = 8.0f;
 
+@synthesize locale = _locale;
+
 #define UIKitLocalizedString(key) [[NSBundle bundleWithIdentifier:@"com.apple.UIKit"] localizedStringForKey:key value:@"" table:nil]
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
-    self = [super initWithFrame:frame inputViewStyle:UIInputViewStyleKeyboard];
+    self = [super initWithFrame:frame];
     if (self) {
         [self _commonInit];
     }
@@ -76,11 +77,10 @@ static const CGFloat MMNumberKeyboardPadSpacing = 8.0f;
     return self;
 }
 
-- (instancetype)initWithFrame:(CGRect)frame inputViewStyle:(UIInputViewStyle)inputViewStyle locale:(NSLocale *)locale
+- (instancetype)initWithCoder:(NSCoder *)coder
 {
-    self = [super initWithFrame:frame inputViewStyle:inputViewStyle];
+    self = [super initWithCoder:coder];
     if (self) {
-        self.locale = locale;
         [self _commonInit];
     }
     return self;
@@ -104,7 +104,6 @@ static const CGFloat MMNumberKeyboardPadSpacing = 8.0f;
 
 - (void)_configureButtonsForCurrentStyle
 {
-    NSParameterAssert(!self.buttonDictionary);
     NSMutableDictionary<NSNumber *, MMKeyboardButton *> *buttonDictionary = [NSMutableDictionary dictionary];
     
     const NSUInteger numberMin = MMNumberKeyboardButtonNumberMin;
@@ -312,6 +311,22 @@ static const CGFloat MMNumberKeyboardPadSpacing = 8.0f;
 }
 
 #pragma mark - Public.
+
+- (NSLocale *)locale
+{
+    return _locale ?: [NSLocale currentLocale];
+}
+
+- (void)setLocale:(NSLocale *)locale
+{
+    if (locale == _locale) {
+        return;
+    }
+    _locale = locale;
+    UIButton *decimalPointButton = self.buttonDictionary[@(MMNumberKeyboardButtonDecimalPoint)];
+    NSString *decimalSeparator = [self.locale objectForKey:NSLocaleDecimalSeparator] ?: @".";
+    [decimalPointButton setTitle:decimalSeparator forState:UIControlStateNormal];
+}
 
 - (void)setAllowsDecimalPoint:(BOOL)allowsDecimalPoint
 {

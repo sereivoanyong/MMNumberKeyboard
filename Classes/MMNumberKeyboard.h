@@ -71,19 +71,6 @@ typedef NS_ENUM(NSUInteger, MMNumberKeyboardStyle) {
 @interface MMNumberKeyboard : UIInputView
 
 /**
- *  Initializes and returns a number keyboard view using the specified style information and locale.
- *
- *  An initialized view object or @c nil if the view could not be initialized.
- *
- *  @param frame          The frame rectangle for the view, measured in points. The origin of the frame is relative to the superview in which you plan to add it.
- *  @param inputViewStyle The style to use when altering the appearance of the view and its subviews. For a list of possible values, see @c UIInputViewStyle
- *  @param locale         An @c NSLocale object that specifies options (specifically the @c NSLocaleDecimalSeparator) used for the keyboard. Specify @c nil if you want to use the current locale.
- *
- *  @returns An initialized view object or @c nil if the view could not be initialized.
- */
-- (instancetype)initWithFrame:(CGRect)frame inputViewStyle:(UIInputViewStyle)inputViewStyle locale:(nullable NSLocale *)locale;
-
-/**
  *  The receiver key input object. If @c nil the object at top of the responder chain is used.
  */
 @property (nonatomic, weak, nullable) id <UIKeyInput> keyInput;
@@ -92,6 +79,11 @@ typedef NS_ENUM(NSUInteger, MMNumberKeyboardStyle) {
  *  Delegate to change text insertion or return key behavior.
  */
 @property (nonatomic, weak, nullable) id <MMNumberKeyboardDelegate> delegate;
+
+/**
+ *  An @c NSLocale object that specifies options (specifically the @c NSLocaleDecimalSeparator) used for the keyboard. Specify @c nil if you want to use the current locale.
+ */
+@property (nonatomic, strong, null_resettable) NSLocale *locale;
 
 /**
  *  If @c YES, the decimal separator key will be displayed.
