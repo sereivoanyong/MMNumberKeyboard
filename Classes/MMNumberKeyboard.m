@@ -21,8 +21,8 @@ typedef NS_ENUM(NSUInteger, MMNumberKeyboardButton) {
 
 @interface MMNumberKeyboard () <UIInputViewAudioFeedback, UITextInputDelegate>
 
-@property (strong, nonatomic) NSDictionary *buttonDictionary;
-@property (strong, nonatomic) NSMutableArray *separatorViews;
+@property (strong, nonatomic) NSDictionary<NSNumber *, MMKeyboardButton *> *buttonDictionary;
+@property (strong, nonatomic) NSMutableArray<UIView *> *separatorViews;
 @property (strong, nonatomic) NSLocale *locale;
 @property (strong, nonatomic) MMTextInputDelegateProxy *keyInputProxy;
 
@@ -104,7 +104,7 @@ static const CGFloat MMNumberKeyboardPadSpacing = 8.0f;
 
 - (void)_configureButtonsForCurrentStyle
 {
-    NSMutableDictionary *buttonDictionary = [NSMutableDictionary dictionary];
+    NSMutableDictionary<NSNumber *, MMKeyboardButton *> *buttonDictionary = [NSMutableDictionary dictionary];
     
     const NSInteger numberMin = MMNumberKeyboardButtonNumberMin;
     const NSInteger numberMax = MMNumberKeyboardButtonNumberMax;
@@ -125,7 +125,7 @@ static const CGFloat MMNumberKeyboardPadSpacing = 8.0f;
     });
     
     for (MMNumberKeyboardButton key = numberMin; key < numberMax; key++) {
-        UIButton *button = [MMKeyboardButton keyboardButtonWithStyle:MMNumberKeyboardButtonStylePrimary];
+        MMKeyboardButton *button = [MMKeyboardButton keyboardButtonWithStyle:MMNumberKeyboardButtonStylePrimary];
         NSString *title = @(key - numberMin).stringValue;
         
         [button setTitle:title forState:UIControlStateNormal];
@@ -136,14 +136,14 @@ static const CGFloat MMNumberKeyboardPadSpacing = 8.0f;
     
     UIImage *backspaceImage = [self.class _keyboardImageNamed:@"MMNumberKeyboardDeleteKey.png"];
     
-    UIButton *backspaceButton = [MMKeyboardButton keyboardButtonWithStyle:MMNumberKeyboardButtonStyleSecondary];
+    MMKeyboardButton *backspaceButton = [MMKeyboardButton keyboardButtonWithStyle:MMNumberKeyboardButtonStyleSecondary];
     [backspaceButton setImage:[backspaceImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
     
     [(MMKeyboardButton *)backspaceButton addTarget:self action:@selector(_backspaceRepeat:) forContinuousPressWithTimeInterval:0.15f];
     
     [buttonDictionary setObject:backspaceButton forKey:@(MMNumberKeyboardButtonBackspace)];
     
-    UIButton *decimalPointButton = [MMKeyboardButton keyboardButtonWithStyle:MMNumberKeyboardButtonStyleSecondary];
+    MMKeyboardButton *decimalPointButton = [MMKeyboardButton keyboardButtonWithStyle:MMNumberKeyboardButtonStyleSecondary];
     
     NSLocale *locale = self.locale ?: [NSLocale currentLocale];
     NSString *decimalSeparator = [locale objectForKey:NSLocaleDecimalSeparator];
@@ -151,7 +151,7 @@ static const CGFloat MMNumberKeyboardPadSpacing = 8.0f;
     
     [buttonDictionary setObject:decimalPointButton forKey:@(MMNumberKeyboardButtonDecimalPoint)];
     
-    for (UIButton *button in buttonDictionary.objectEnumerator) {
+    for (MMKeyboardButton *button in buttonDictionary.objectEnumerator) {
         [button setExclusiveTouch:YES];
         [button addTarget:self action:@selector(_buttonInput:) forControlEvents:UIControlEventTouchUpInside];
         [button addTarget:self action:@selector(_buttonPlayClick:) forControlEvents:UIControlEventTouchDown];
@@ -176,7 +176,7 @@ static const CGFloat MMNumberKeyboardPadSpacing = 8.0f;
     CGPoint point = [gestureRecognizer locationInView:self];
     
     if (gestureRecognizer.state == UIGestureRecognizerStateChanged || gestureRecognizer.state == UIGestureRecognizerStateEnded) {
-        for (UIButton *button in self.buttonDictionary.objectEnumerator) {
+        for (MMKeyboardButton *button in self.buttonDictionary.objectEnumerator) {
             BOOL points = CGRectContainsPoint(button.frame, point) && !button.isHidden;
             
             if (gestureRecognizer.state == UIGestureRecognizerStateChanged) {
@@ -192,12 +192,12 @@ static const CGFloat MMNumberKeyboardPadSpacing = 8.0f;
     }
 }
 
-- (void)_buttonPlayClick:(UIButton *)button
+- (void)_buttonPlayClick:(MMKeyboardButton *)button
 {
     [[UIDevice currentDevice] playInputClick];
 }
 
-- (void)_buttonInput:(UIButton *)button
+- (void)_buttonInput:(MMKeyboardButton *)button
 {
     __block MMNumberKeyboardButton keyboardButton = MMNumberKeyboardButtonNone;
     
@@ -266,7 +266,7 @@ static const CGFloat MMNumberKeyboardPadSpacing = 8.0f;
     }
 }
 
-- (void)_backspaceRepeat:(UIButton *)button
+- (void)_backspaceRepeat:(MMKeyboardButton *)button
 {
     id <UIKeyInput> keyInput = self.keyInput;
     
@@ -389,8 +389,8 @@ NS_INLINE CGRect MMButtonRectMake(CGRect rect, CGRect contentRect, BOOL usesRoun
     }
 #endif
     
-    NSDictionary *buttonDictionary = self.buttonDictionary;
-    NSMutableArray *separatorViews = self.separatorViews;
+    NSDictionary<NSNumber *, MMKeyboardButton *> *buttonDictionary = self.buttonDictionary;
+    NSMutableArray<UIView *> *separatorViews = self.separatorViews;
     
     // Settings.
     BOOL usesRoundedButtons = NO;
@@ -442,7 +442,7 @@ NS_INLINE CGRect MMButtonRectMake(CGRect rect, CGRect contentRect, BOOL usesRoun
     const NSInteger numbersPerLine = 3;
     
     for (MMNumberKeyboardButton key = numberMin; key < numberMax; key++) {
-        UIButton *button = buttonDictionary[@(key)];
+        MMKeyboardButton *button = buttonDictionary[@(key)];
         NSInteger digit = key - numberMin;
         
         CGRect rect = (CGRect){ .size = numberSize };
@@ -470,7 +470,7 @@ NS_INLINE CGRect MMButtonRectMake(CGRect rect, CGRect contentRect, BOOL usesRoun
     }
     
     // Layout special key.
-    UIButton *specialKey = buttonDictionary[@(MMNumberKeyboardButtonDecimalPoint)];
+    MMKeyboardButton *specialKey = buttonDictionary[@(MMNumberKeyboardButtonDecimalPoint)];
     if (specialKey) {
         CGRect rect = (CGRect){ .size = numberSize };
         rect.origin.y = numberSize.height * 3;
@@ -479,7 +479,7 @@ NS_INLINE CGRect MMButtonRectMake(CGRect rect, CGRect contentRect, BOOL usesRoun
     }
     
     // Layout decimal point.
-    UIButton *decimalPointKey = buttonDictionary[@(MMNumberKeyboardButtonBackspace)];
+    MMKeyboardButton *decimalPointKey = buttonDictionary[@(MMNumberKeyboardButtonBackspace)];
     if (decimalPointKey) {
         CGRect rect = (CGRect){ .size = numberSize };
         rect.origin.y = numberSize.height * 3;
