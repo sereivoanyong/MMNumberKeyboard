@@ -275,7 +275,7 @@ static const CGFloat MMNumberKeyboardPadSpacing = 8.0f;
         
         if ([keyInput conformsToProtocol:@protocol(UITextInput)]) {
             id<UITextInput> textInput = (id<UITextInput>)keyInput;
-            keyInputProxy = [MMTextInputDelegateProxy proxyForTextInput:textInput delegate:self];
+            keyInputProxy = [[MMTextInputDelegateProxy alloc] initWithTextInput:textInput delegate:self];
             textInput.inputDelegate = (id)keyInputProxy;
         } else {
             keyInputProxy = nil;

@@ -10,29 +10,29 @@
 
 @implementation MMTextInputDelegateProxy
 
-+ (instancetype)proxyForTextInput:(id<UITextInput>)textInput delegate:(id<UITextInputDelegate>)delegate
+- (instancetype)initWithTextInput:(id<UITextInput>)textInput delegate:(id<UITextInputDelegate>)delegate
 {
     NSParameterAssert(delegate);
-    
-    MMTextInputDelegateProxy *proxy = [[MMTextInputDelegateProxy alloc] init];
-    proxy->_delegate = delegate;
-    proxy->_previousTextInputDelegate = textInput.inputDelegate;
-    
-    return proxy;
+    self = [super init];
+    if (self) {
+        _delegate = delegate;
+        _previousTextInputDelegate = textInput.inputDelegate;
+    }
+    return self;
 }
 
 #pragma mark - Forwarding.
 
-- (NSArray *)delegates
+- (NSArray<id<UITextInputDelegate>> *)delegates
 {
-    NSMutableArray *delegates = [NSMutableArray array];
+    NSMutableArray<id<UITextInputDelegate>> *delegates = [NSMutableArray array];
     
-    id <UITextInputDelegate> previousTextInputDelegate = self.previousTextInputDelegate;
+    id<UITextInputDelegate> previousTextInputDelegate = self.previousTextInputDelegate;
     if (previousTextInputDelegate) {
         [delegates addObject:previousTextInputDelegate];
     }
     
-    id <UITextInputDelegate> delegate = self.delegate;
+    id<UITextInputDelegate> delegate = self.delegate;
     if (delegate) {
         [delegates addObject:delegate];
     }
@@ -40,28 +40,28 @@
     return [delegates copy];
 }
 
-- (BOOL)respondsToSelector:(SEL)aSelector
+- (BOOL)respondsToSelector:(SEL)selector
 {
-    if ([super respondsToSelector:aSelector]) {
+    if ([super respondsToSelector:selector]) {
         return YES;
     }
     
-    for (id delegate in self.delegates) {
-        if ([delegate respondsToSelector:aSelector]) {
+    for (id<UITextInputDelegate> delegate in self.delegates) {
+        if ([delegate respondsToSelector:selector]) {
             return YES;
         }
     }
     return NO;
 }
 
-- (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector
+- (NSMethodSignature *)methodSignatureForSelector:(SEL)selector
 {
-    NSMethodSignature *signature = [super methodSignatureForSelector:aSelector];
+    NSMethodSignature *signature = [super methodSignatureForSelector:selector];
     
     if (!signature) {
-        for (id delegate in self.delegates) {
-            if ([delegate respondsToSelector:aSelector]) {
-                return [delegate methodSignatureForSelector:aSelector];
+        for (id<UITextInputDelegate> delegate in self.delegates) {
+            if ([delegate respondsToSelector:selector]) {
+                return [(NSObject *)delegate methodSignatureForSelector:selector];
             }
         }
     }
@@ -69,11 +69,11 @@
     return signature;
 }
 
-- (void)forwardInvocation:(NSInvocation *)anInvocation
+- (void)forwardInvocation:(NSInvocation *)invocation
 {
-    for (id delegate in self.delegates) {
-        if ([delegate respondsToSelector:anInvocation.selector]) {
-            [anInvocation invokeWithTarget:delegate];
+    for (id<UITextInputDelegate> delegate in self.delegates) {
+        if ([delegate respondsToSelector:invocation.selector]) {
+            [invocation invokeWithTarget:delegate];
         }
     }
 }

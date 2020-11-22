@@ -15,6 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @interface MMTextInputDelegateProxy : NSObject
 
+- (instancetype)init NS_UNAVAILABLE;
+
 /**
  *  Initializes and returns a proxy delegate object.
  *
@@ -25,21 +27,21 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @returns An initialized proxy object or @c nil if the proxy could not be initialized.
  */
-+ (instancetype)proxyForTextInput:(nullable id <UITextInput>)textInput delegate:(nullable id <UITextInputDelegate>)delegate;
+- (instancetype)initWithTextInput:(nullable id<UITextInput>)textInput delegate:(id<UITextInputDelegate>)delegate NS_DESIGNATED_INITIALIZER;
 
 /**
  *  An input delegate that is notified when text changes or when the selection changes.
  *
  *  @note This would normally be a @c MMNumberKeyboard instance.
  */
-@property (nonatomic, weak, readonly, nullable) id <UITextInputDelegate> delegate;
+@property (nonatomic, weak, readonly, nullable) id<UITextInputDelegate> delegate;
 
 /**
  *  The previous input delegate, so that it is also notified when text changes or when the selection changes.
  *
  *  @note This would normally be a system-assigned delegate.
  */
-@property (nonatomic, weak, readonly, nullable) id <UITextInputDelegate> previousTextInputDelegate;
+@property (nonatomic, weak, readonly, nullable) id<UITextInputDelegate> previousTextInputDelegate;
 
 @end
 
