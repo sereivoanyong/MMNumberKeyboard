@@ -70,7 +70,7 @@ NS_SWIFT_NAME(NumberKeyboardView)
 /**
  *  The receiver key input object. If @c nil the object at top of the responder chain is used.
  */
-@property (nonatomic, weak, nullable) id <UIKeyInput> keyInput;
+@property (nonatomic, weak, readonly, nullable) id <UIKeyInput> keyInput;
 
 /**
  *  Delegate to change text insertion or return key behavior.

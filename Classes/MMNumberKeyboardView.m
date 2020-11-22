@@ -55,6 +55,7 @@ static const CGFloat MMNumberKeyboardRowHeight = 55.0f;
 static const CGFloat MMNumberKeyboardPadBorder = 7.0f;
 static const CGFloat MMNumberKeyboardPadSpacing = 8.0f;
 
+@synthesize keyInput = _keyInput;
 @synthesize locale = _locale;
 
 #define UIKitLocalizedString(key) [[NSBundle bundleWithIdentifier:@"com.apple.UIKit"] localizedStringForKey:key value:@"" table:nil]
