@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "MMNumberKeyboard.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -31,6 +30,10 @@ typedef NS_ENUM(NSUInteger, MMKeyboardButtonStyle) {
  */
 @interface MMKeyboardButton : UIButton
 
+- (instancetype)init NS_UNAVAILABLE;
+- (instancetype)initWithFrame:(CGRect)frame NS_UNAVAILABLE;
+- (nullable instancetype)initWithCoder:(NSCoder *)coder NS_UNAVAILABLE;
+
 /**
  *  Initializes and returns a keyboard button view using the specified style.
  *
@@ -40,14 +43,14 @@ typedef NS_ENUM(NSUInteger, MMKeyboardButtonStyle) {
  *
  *  @returns An initialized view object or @c nil if the view could not be initialized.
  */
-+ (instancetype)keyboardButtonWithStyle:(MMKeyboardButtonStyle)style;
+- (instancetype)initWithStyle:(MMKeyboardButtonStyle)style NS_DESIGNATED_INITIALIZER;
 
 /**
  *  The style of the button.
  *
  *  @note The default value of this property is @c MMKeyboardButtonStylePrimary.
  */
-@property (assign, nonatomic) MMKeyboardButtonStyle style;
+@property (assign, nonatomic, readonly) MMKeyboardButtonStyle style;
 
 /**
  *  Determines whether the button has a rounded corners or not.

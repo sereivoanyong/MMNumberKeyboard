@@ -19,36 +19,15 @@
 
 @implementation MMKeyboardButton
 
-+ (instancetype)keyboardButtonWithStyle:(MMKeyboardButtonStyle)style
+- (instancetype)initWithStyle:(MMKeyboardButtonStyle)style
 {
-    MMKeyboardButton *button = [self buttonWithType:UIButtonTypeCustom];
-    button.style = style;
-    
-    return button;
-}
-
-- (instancetype)initWithFrame:(CGRect)frame
-{
-    self = [super initWithFrame:frame];
+    self = [super initWithFrame:CGRectZero];
     if (self) {
-        [self _buttonStyleDidChange];
+        _style = style;
+        self.theme = [MMKeyboardTheme themeForStyle:self.style];
+        [self _updateButtonAppearance];
     }
     return self;
-}
-
-- (void)setStyle:(MMKeyboardButtonStyle)style
-{
-    if (style != _style) {
-        _style = style;
-        
-        [self _buttonStyleDidChange];
-    }
-}
-
-- (void)_buttonStyleDidChange
-{
-    [self setTheme:[MMKeyboardTheme themeForStyle:self.style]];
-    [self _updateButtonAppearance];
 }
 
 - (void)willMoveToWindow:(UIWindow *)newWindow
