@@ -65,7 +65,7 @@ typedef NS_ENUM(NSUInteger, MMNumberKeyboardViewStyle) {
  *  A simple keyboard to use with numbers and, optionally, a decimal point.
  */
 NS_SWIFT_NAME(NumberKeyboardView)
-@interface MMNumberKeyboardView : UIInputView
+@interface MMNumberKeyboardView : UIInputView <UIInputViewAudioFeedback>
 
 /**
  *  The receiver key input object. If @c nil the object at top of the responder chain is used.
@@ -95,6 +95,13 @@ NS_SWIFT_NAME(NumberKeyboardView)
  *  @note The default style for the keyboard is @c MMNumberKeyboardViewStyleAutomatic.
  */
 @property (nonatomic, assign) MMNumberKeyboardViewStyle preferredStyle;
+
+/**
+ *  Specifies whether or not the number keyboard view enables input clicks.
+ *
+ *  @note The default value of this property is @c YES.
+ */
+@property (nonatomic, assign) BOOL enableInputClicksWhenVisible;
 
 @end
 

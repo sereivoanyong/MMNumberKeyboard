@@ -19,7 +19,7 @@ typedef NS_ENUM(NSUInteger, MMNumberKeyboardViewKey) {
     MMNumberKeyboardViewKeyNone = NSNotFound,
 };
 
-@interface MMNumberKeyboardView () <UIInputViewAudioFeedback, UITextInputDelegate>
+@interface MMNumberKeyboardView () <UITextInputDelegate>
 
 @property (nonatomic, strong) NSDictionary<NSNumber *, MMKeyButton *> *keyButtons;
 @property (nonatomic, strong) NSMutableArray<UIView *> *separatorViews;
@@ -79,6 +79,7 @@ static const CGFloat MMNumberKeyboardPadSpacing = 8.0f;
 
 - (void)_commonInit
 {
+    _enableInputClicksWhenVisible = YES;
     // Configure buttons.
     [self _configureButtonsForCurrentStyle];
     
@@ -548,13 +549,6 @@ NS_INLINE CGRect MMButtonRectMake(CGRect rect, CGRect contentRect, BOOL usesRoun
     }
     
     return size;
-}
-
-#pragma mark - Audio feedback.
-
-- (BOOL)enableInputClicksWhenVisible
-{
-    return YES;
 }
 
 #pragma mark - Accessing keyboard images.
