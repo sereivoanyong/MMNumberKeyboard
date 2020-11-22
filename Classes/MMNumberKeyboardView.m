@@ -563,7 +563,12 @@ NS_INLINE CGRect MMButtonRectMake(CGRect rect, CGRect contentRect, BOOL usesRoun
         return nil;
     }
 
-    NSBundle *bundle = [NSBundle bundleForClass:[self class]];
+    NSBundle *bundle;
+#if defined (SWIFTPM_MODULE_BUNDLE)
+    bundle = SWIFTPM_MODULE_BUNDLE;
+#else
+    bundle = [NSBundle bundleForClass:[self class]];
+#endif
     NSString *resourcePath = [bundle pathForResource:resource ofType:extension];
 
     if (resourcePath.length) {
