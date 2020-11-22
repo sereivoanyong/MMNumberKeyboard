@@ -1,30 +1,30 @@
 //
-//  MMKeyboardButton.m
+//  MMKeyButton.m
 //  MMNumberKeyboard
 //
 //  Created by Matías Martínez on 2/12/18.
 //  Copyright © 2018 Matías Martínez. All rights reserved.
 //
 
-#import "MMKeyboardButton.h"
-#import "MMKeyboardTheme.h"
+#import "MMKeyButton.h"
+#import "MMKeyButtonTheme.h"
 
-@interface MMKeyboardButton ()
+@interface MMKeyButton ()
 
 @property (nonatomic, strong) NSTimer *continuousPressTimer;
 @property (nonatomic, assign) NSTimeInterval continuousPressTimeInterval;
-@property (nonatomic, strong) MMKeyboardTheme *theme;
+@property (nonatomic, strong) MMKeyButtonTheme *theme;
 
 @end
 
-@implementation MMKeyboardButton
+@implementation MMKeyButton
 
-- (instancetype)initWithStyle:(MMKeyboardButtonStyle)style
+- (instancetype)initWithStyle:(MMKeyButtonStyle)style
 {
     self = [super initWithFrame:CGRectZero];
     if (self) {
         _style = style;
-        self.theme = [MMKeyboardTheme themeForStyle:self.style];
+        self.theme = [MMKeyButtonTheme themeForStyle:self.style];
         [self _updateButtonAppearance];
     }
     return self;
@@ -48,7 +48,7 @@
 
 - (void)_updateButtonAppearance
 {
-    const auto MMKeyboardTheme *theme = self.theme;
+    const auto MMKeyButtonTheme *theme = self.theme;
     const BOOL isRounded = (self.usesRoundedCorners);
     
     if (!self.isEnabled) {

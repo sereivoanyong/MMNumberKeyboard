@@ -7,9 +7,9 @@
 //
 
 #import "ViewController.h"
-#import "MMNumberKeyboard.h"
+#import "MMNumberKeyboardView.h"
 
-@interface ViewController () <MMNumberKeyboardDelegate>
+@interface ViewController () <MMNumberKeyboardViewDelegate>
 
 @property (strong, nonatomic) UITextField *textField;
 
@@ -22,13 +22,13 @@
     [super viewDidLoad];
     
     // Create and configure the keyboard.
-    MMNumberKeyboard *keyboard = [[MMNumberKeyboard alloc] initWithFrame:CGRectZero];
-    keyboard.allowsDecimalPoint = YES;
-    keyboard.delegate = self;
+    MMNumberKeyboardView *keyboardView = [[MMNumberKeyboardView alloc] initWithFrame:CGRectZero];
+    keyboardView.allowsDecimalPoint = YES;
+    keyboardView.delegate = self;
     
     // Configure an example UITextField.
     UITextField *textField = [[UITextField alloc] initWithFrame:CGRectZero];
-    textField.inputView = keyboard;
+    textField.inputView = keyboardView;
     textField.text = @(123456789).stringValue;
     textField.placeholder = @"Type something…";
     textField.font = [UIFont systemFontOfSize:24.0f];

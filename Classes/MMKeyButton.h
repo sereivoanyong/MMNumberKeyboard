@@ -1,5 +1,5 @@
 //
-//  MMKeyboardButton.h
+//  MMKeyButton.h
 //  MMNumberKeyboard
 //
 //  Created by Matías Martínez on 2/12/18.
@@ -13,22 +13,23 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Specifies the style of a keyboard button.
  */
-typedef NS_ENUM(NSUInteger, MMKeyboardButtonStyle) {
+typedef NS_ENUM(NSUInteger, MMKeyButtonStyle) {
     /**
     *  A primary style button, such as those for the number keys.
     */
-    MMKeyboardButtonStylePrimary,
+    MMKeyButtonStylePrimary,
     
     /**
     *  A secondary style button, such as the decimal point key and the backspace key.
     */
-    MMKeyboardButtonStyleSecondary,
-};
+    MMKeyButtonStyleSecondary,
+} NS_SWIFT_NAME(KeyButton.Style);
 
 /**
  *  The custom button class used on @c MMNumberKeyboard.
  */
-@interface MMKeyboardButton : UIButton
+NS_SWIFT_NAME(KeyButton)
+@interface MMKeyButton : UIButton
 
 - (instancetype)init NS_UNAVAILABLE;
 - (instancetype)initWithFrame:(CGRect)frame NS_UNAVAILABLE;
@@ -39,18 +40,18 @@ typedef NS_ENUM(NSUInteger, MMKeyboardButtonStyle) {
  *
  *  An initialized view object or @c nil if the view could not be initialized.
  *
- *  @param style The style to use when altering the appearance of the button. For a list of possible values, see @c MMNumberKeyboardButtonStyle
+ *  @param style The style to use when altering the appearance of the button. For a list of possible values, see @c MMKeyButtonStyle
  *
  *  @returns An initialized view object or @c nil if the view could not be initialized.
  */
-- (instancetype)initWithStyle:(MMKeyboardButtonStyle)style NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithStyle:(MMKeyButtonStyle)style NS_DESIGNATED_INITIALIZER;
 
 /**
  *  The style of the button.
  *
- *  @note The default value of this property is @c MMKeyboardButtonStylePrimary.
+ *  @note The default value of this property is @c MMKeyButtonStylePrimary.
  */
-@property (nonatomic, assign, readonly) MMKeyboardButtonStyle style;
+@property (nonatomic, assign, readonly) MMKeyButtonStyle style;
 
 /**
  *  Determines whether the button has a rounded corners or not.

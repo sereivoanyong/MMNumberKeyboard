@@ -1,5 +1,5 @@
 //
-//  MMKeyboardTheme.h
+//  MMKeyButtonTheme.h
 //  MMNumberKeyboard
 //
 //  Created by Matías Martínez on 8/7/19.
@@ -7,14 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "MMKeyboardButton.h"
+#import "MMKeyButton.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 /**
 *  A theme object used internally by @c MMNumberKeyboard that defines the color theme for the keyboard.
 */
-@interface MMKeyboardTheme : NSObject
+NS_SWIFT_NAME(KeyButton.Theme)
+@interface MMKeyButtonTheme : NSObject
 
 /**
  *  Returns an appropiate theme for the specified keyboard button style.
@@ -23,7 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @returns An initialized theme object.
  */
-+ (instancetype)themeForStyle:(MMKeyboardButtonStyle)style;
++ (instancetype)themeForStyle:(MMKeyButtonStyle)style;
 
 /**
  *  The fill color for the buttons.

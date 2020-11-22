@@ -1,15 +1,15 @@
 //
-//  MMKeyboardTheme.m
+//  MMKeyButtonTheme.m
 //  MMNumberKeyboard
 //
 //  Created by Matías Martínez on 8/7/19.
 //  Copyright © 2019 Matías Martínez. All rights reserved.
 //
 
-#import "MMKeyboardTheme.h"
+#import "MMKeyButtonTheme.h"
 #import "UIColor+MMNumberKeyboardAdditions.h"
 
-@implementation MMKeyboardTheme
+@implementation MMKeyButtonTheme
 
 - (instancetype)init
 {
@@ -26,10 +26,10 @@
     return self;
 }
 
-+ (instancetype)themeForStyle:(MMKeyboardButtonStyle)style
++ (instancetype)themeForStyle:(MMKeyButtonStyle)style
 {
-    static MMKeyboardTheme *primaryStyleTheme;
-    static MMKeyboardTheme *secondaryStyleTheme;
+    static MMKeyButtonTheme *primaryStyleTheme;
+    static MMKeyButtonTheme *secondaryStyleTheme;
     
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -49,17 +49,17 @@
         secondaryStyleTheme->_highlightedFillColor = [UIColor clearColor];
     });
     
-    MMKeyboardTheme *theme = nil;
+    MMKeyButtonTheme *theme = nil;
     
     switch (style) {
-        case MMKeyboardButtonStylePrimary:
+        case MMKeyButtonStylePrimary:
             theme = primaryStyleTheme;
             break;
-        case MMKeyboardButtonStyleSecondary:
+        case MMKeyButtonStyleSecondary:
             theme = secondaryStyleTheme;
             break;
         default:
-            [[NSException exceptionWithName:NSInternalInconsistencyException reason:[NSString stringWithFormat:@"The `MMNumberKeyboardButtonStyle` value of (%@) is not supported.", @(style)] userInfo:nil] raise];
+            [[NSException exceptionWithName:NSInternalInconsistencyException reason:[NSString stringWithFormat:@"The `MMKeyButtonStyle` value of (%@) is not supported.", @(style)] userInfo:nil] raise];
             break;
     }
     

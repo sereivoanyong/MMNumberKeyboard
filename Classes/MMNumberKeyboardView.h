@@ -1,5 +1,5 @@
 //
-//  MMNumberKeyboard.h
+//  MMNumberKeyboardView.h
 //  MMNumberKeyboard
 //
 //  Created by Matías Martínez on 12/10/15.
@@ -10,18 +10,14 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-//! Project version number for MMNumberKeyboard.
-FOUNDATION_EXPORT double MMNumberKeyboardVersionNumber;
-
-//! Project version string for MMNumberKeyboard.
-FOUNDATION_EXPORT const unsigned char MMNumberKeyboardVersionString[];
-
-@class MMNumberKeyboard;
+@class MMNumberKeyboardView;
 
 /**
- *  The @c MMNumberKeyboardDelegate protocol defines the messages sent to a delegate object as part of the sequence of editing text. All of the methods of this protocol are optional.
+ *  The @c MMNumberKeyboardViewDelegate protocol defines the messages sent to a delegate object as part of the sequence of editing text. All of the methods of this protocol are optional.
  */
-@protocol MMNumberKeyboardDelegate <NSObject>
+NS_SWIFT_NAME(NumberKeyboardViewDelegate)
+@protocol MMNumberKeyboardViewDelegate <NSObject>
+
 @optional
 
 /**
@@ -32,7 +28,7 @@ FOUNDATION_EXPORT const unsigned char MMNumberKeyboardVersionString[];
  *
  *  @return Returns	@c YES if the text should be inserted or @c NO if it should not.
  */
-- (BOOL)numberKeyboard:(MMNumberKeyboard *)numberKeyboard shouldInsertText:(NSString *)text;
+- (BOOL)numberKeyboardView:(MMNumberKeyboardView *)numberKeyboardView shouldInsertText:(NSString *)text;
 
 /**
  *  Asks the delegate if the keyboard should remove the character just before the cursor.
@@ -41,34 +37,35 @@ FOUNDATION_EXPORT const unsigned char MMNumberKeyboardVersionString[];
  *
  *  @return Returns	@c YES if the keyboard should implement its default behavior for the delete backward button; otherwise, @c NO.
  */
-- (BOOL)numberKeyboardShouldDeleteBackward:(MMNumberKeyboard *)numberKeyboard;
+- (BOOL)numberKeyboardViewShouldDeleteBackward:(MMNumberKeyboardView *)numberKeyboardView;
 
 @end
 
 /**
  *  Specifies the style for the keyboard.
  */
-typedef NS_ENUM(NSUInteger, MMNumberKeyboardStyle) {
+typedef NS_ENUM(NSUInteger, MMNumberKeyboardViewStyle) {
     /**
      *  An automatic style. It sets the appropiate style to match the appearance of the system keyboard, for example, using rounded buttons on an iPad.
      */
-    MMNumberKeyboardStyleAutomatic,
+    MMNumberKeyboardViewStyleAutomatic,
     
     /**
      *  A plain buttons keyboard style. The buttons take the full width of the keyboard and are divided by inline separators. This style is not supported when the keyboard needs to be inset.
      */
-    MMNumberKeyboardStylePlainButtons,
+    MMNumberKeyboardViewStylePlainButtons,
     
     /**
      *  A rounded buttons keyboard style. The buttons are displayed with a rounded style, and can be inset from the sides of the keyboard.
      */
-    MMNumberKeyboardStyleRoundedButtons
-};
+    MMNumberKeyboardViewStyleRoundedButtons
+} NS_SWIFT_NAME(NumberKeyboardView.Style);
 
 /**
  *  A simple keyboard to use with numbers and, optionally, a decimal point.
  */
-@interface MMNumberKeyboard : UIInputView
+NS_SWIFT_NAME(NumberKeyboardView)
+@interface MMNumberKeyboardView : UIInputView
 
 /**
  *  The receiver key input object. If @c nil the object at top of the responder chain is used.
@@ -78,7 +75,7 @@ typedef NS_ENUM(NSUInteger, MMNumberKeyboardStyle) {
 /**
  *  Delegate to change text insertion or return key behavior.
  */
-@property (nonatomic, weak, nullable) id <MMNumberKeyboardDelegate> delegate;
+@property (nonatomic, weak, nullable) id <MMNumberKeyboardViewDelegate> delegate;
 
 /**
  *  An @c NSLocale object that specifies options (specifically the @c NSLocaleDecimalSeparator) used for the keyboard. Specify @c nil if you want to use the current locale.
@@ -95,9 +92,9 @@ typedef NS_ENUM(NSUInteger, MMNumberKeyboardStyle) {
 /**
  *  The preferred keyboard style.
  *
- *  @note The default style for the keyboard is @c MMNumberKeyboardStyleAutomatic.
+ *  @note The default style for the keyboard is @c MMNumberKeyboardViewStyleAutomatic.
  */
-@property (nonatomic, assign) MMNumberKeyboardStyle preferredStyle;
+@property (nonatomic, assign) MMNumberKeyboardViewStyle preferredStyle;
 
 @end
 
