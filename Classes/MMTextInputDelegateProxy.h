@@ -32,14 +32,14 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @note This would normally be a @c MMNumberKeyboard instance.
  */
-@property (readonly, nonatomic, weak, nullable) id <UITextInputDelegate> delegate;
+@property (nonatomic, weak, readonly, nullable) id <UITextInputDelegate> delegate;
 
 /**
  *  The previous input delegate, so that it is also notified when text changes or when the selection changes.
  *
  *  @note This would normally be a system-assigned delegate.
  */
-@property (readonly, nonatomic, weak, nullable) id <UITextInputDelegate> previousTextInputDelegate;
+@property (nonatomic, weak, readonly, nullable) id <UITextInputDelegate> previousTextInputDelegate;
 
 @end
 

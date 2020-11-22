@@ -28,37 +28,37 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  The fill color for the buttons.
  */
-@property (readonly, nonatomic) UIColor *fillColor;
+@property (nonatomic, readonly) UIColor *fillColor;
 
 /**
  *  The fill color for the buttons on their highlighted state.
  */
-@property (readonly, nonatomic) UIColor *highlightedFillColor;
+@property (nonatomic, readonly) UIColor *highlightedFillColor;
 
 /**
  *  The foreground color for text and other elements.
  */
-@property (readonly, nonatomic) UIColor *controlColor;
+@property (nonatomic, readonly) UIColor *controlColor;
 
 /**
  *  The foreground color for text and other elements on their highlighted state.
  */
-@property (readonly, nonatomic) UIColor *highlightedControlColor;
+@property (nonatomic, readonly) UIColor *highlightedControlColor;
 
 /**
  *  The fill color for the buttons on their disabled state.
  */
-@property (readonly, nonatomic) UIColor *disabledFillColor;
+@property (nonatomic, readonly) UIColor *disabledFillColor;
 
 /**
  *  The foreground color for text and other elements on their disabled state.
  */
-@property (readonly, nonatomic) UIColor *disabledControlColor;
+@property (nonatomic, readonly) UIColor *disabledControlColor;
 
 /**
  *  The shadow color of the buttons.
  */
-@property (readonly, nonatomic) UIColor *shadowColor;
+@property (nonatomic, readonly) UIColor *shadowColor;
 
 @end
 

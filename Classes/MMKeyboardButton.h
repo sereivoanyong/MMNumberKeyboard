@@ -50,14 +50,14 @@ typedef NS_ENUM(NSUInteger, MMKeyboardButtonStyle) {
  *
  *  @note The default value of this property is @c MMKeyboardButtonStylePrimary.
  */
-@property (assign, nonatomic, readonly) MMKeyboardButtonStyle style;
+@property (nonatomic, assign, readonly) MMKeyboardButtonStyle style;
 
 /**
  *  Determines whether the button has a rounded corners or not.
  *
  *  @note The default value of this property is @c NO.
  */
-@property (assign, nonatomic) BOOL usesRoundedCorners;
+@property (nonatomic, assign) BOOL usesRoundedCorners;
 
 /**
  *  Associates a target object and action method with a continuous press interaction.

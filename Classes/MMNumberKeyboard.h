@@ -86,26 +86,26 @@ typedef NS_ENUM(NSUInteger, MMNumberKeyboardStyle) {
 /**
  *  The receiver key input object. If @c nil the object at top of the responder chain is used.
  */
-@property (weak, nonatomic, nullable) id <UIKeyInput> keyInput;
+@property (nonatomic, weak, nullable) id <UIKeyInput> keyInput;
 
 /**
  *  Delegate to change text insertion or return key behavior.
  */
-@property (weak, nonatomic, nullable) id <MMNumberKeyboardDelegate> delegate;
+@property (nonatomic, weak, nullable) id <MMNumberKeyboardDelegate> delegate;
 
 /**
  *  If @c YES, the decimal separator key will be displayed.
  *
  *  @note The default value of this property is @c NO.
  */
-@property (assign, nonatomic) BOOL allowsDecimalPoint;
+@property (nonatomic, assign) BOOL allowsDecimalPoint;
 
 /**
  *  The preferred keyboard style.
  *
  *  @note The default style for the keyboard is @c MMNumberKeyboardStyleAutomatic.
  */
-@property (assign, nonatomic) MMNumberKeyboardStyle preferredStyle;
+@property (nonatomic, assign) MMNumberKeyboardStyle preferredStyle;
 
 @end
 

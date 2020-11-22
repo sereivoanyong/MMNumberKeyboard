@@ -21,14 +21,14 @@ typedef NS_ENUM(NSUInteger, MMNumberKeyboardButton) {
 
 @interface MMNumberKeyboard () <UIInputViewAudioFeedback, UITextInputDelegate>
 
-@property (strong, nonatomic) NSDictionary<NSNumber *, MMKeyboardButton *> *buttonDictionary;
-@property (strong, nonatomic) NSMutableArray<UIView *> *separatorViews;
-@property (strong, nonatomic) NSLocale *locale;
-@property (strong, nonatomic) MMTextInputDelegateProxy *keyInputProxy;
+@property (nonatomic, strong) NSDictionary<NSNumber *, MMKeyboardButton *> *buttonDictionary;
+@property (nonatomic, strong) NSMutableArray<UIView *> *separatorViews;
+@property (nonatomic, strong) NSLocale *locale;
+@property (nonatomic, strong) MMTextInputDelegateProxy *keyInputProxy;
 
 @end
 
-static __weak id currentFirstResponder;
+__weak static id currentFirstResponder;
 
 @implementation UIResponder (FirstResponder)
 
@@ -95,8 +95,8 @@ static const CGFloat MMNumberKeyboardPadSpacing = 8.0f;
     self.separatorViews = [NSMutableArray array];
     
     // If an input view contains the .flexibleHeight option, the view will be sized as the default keyboard. This doesn't make much sense in the iPad, as we prefer a more compact keyboard.
-    if (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad) {
-        [self setAutoresizingMask:UIViewAutoresizingFlexibleHeight];
+    if ([UIDevice currentDevice].userInterfaceIdiom != UIUserInterfaceIdiomPad) {
+        self.autoresizingMask = UIViewAutoresizingFlexibleHeight;
     } else {
         [self sizeToFit];
     }
@@ -104,67 +104,42 @@ static const CGFloat MMNumberKeyboardPadSpacing = 8.0f;
 
 - (void)_configureButtonsForCurrentStyle
 {
+    NSParameterAssert(!self.buttonDictionary);
     NSMutableDictionary<NSNumber *, MMKeyboardButton *> *buttonDictionary = [NSMutableDictionary dictionary];
     
-    const NSInteger numberMin = MMNumberKeyboardButtonNumberMin;
-    const NSInteger numberMax = MMNumberKeyboardButtonNumberMax;
+    const NSUInteger numberMin = MMNumberKeyboardButtonNumberMin;
+    const NSUInteger numberMax = MMNumberKeyboardButtonNumberMax;
     
-    const CGFloat buttonFontPointSize = 28.0f;
-    UIFont *buttonFont = ({
-        UIFont *font = nil;
-#if defined(__has_attribute) && __has_attribute(availability)
-        if (@available(iOS 8.2, *)) {
-            font = [UIFont systemFontOfSize:buttonFontPointSize weight:UIFontWeightLight];
-        }
-#else
-        if ([UIFont respondsToSelector:@selector(systemFontOfSize:weight:)]) {
-            font = [UIFont systemFontOfSize:buttonFontPointSize weight:UIFontWeightLight];
-        }
-#endif
-        font ?: [UIFont fontWithName:@"HelveticaNeue-Light" size:buttonFontPointSize];
-    });
+    UIFont *buttonFont = [UIFont systemFontOfSize:28.0f weight:UIFontWeightLight];
     
     for (MMNumberKeyboardButton key = numberMin; key < numberMax; key++) {
         MMKeyboardButton *button = [[MMKeyboardButton alloc] initWithStyle:MMKeyboardButtonStylePrimary];
+        button.titleLabel.font = buttonFont;
         NSString *title = @(key - numberMin).stringValue;
-        
         [button setTitle:title forState:UIControlStateNormal];
-        [button.titleLabel setFont:buttonFont];
-        
-        [buttonDictionary setObject:button forKey:@(key)];
+        buttonDictionary[@(key)] = button;
     }
     
-    UIImage *backspaceImage = [self.class _keyboardImageNamed:@"MMNumberKeyboardDeleteKey.png"];
-    
     MMKeyboardButton *backspaceButton = [[MMKeyboardButton alloc] initWithStyle:MMKeyboardButtonStyleSecondary];
-    [backspaceButton setImage:[backspaceImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
-    
-    [(MMKeyboardButton *)backspaceButton addTarget:self action:@selector(_backspaceRepeat:) forContinuousPressWithTimeInterval:0.15f];
-    
-    [buttonDictionary setObject:backspaceButton forKey:@(MMNumberKeyboardButtonBackspace)];
+    UIImage *backspaceImage = [[[self class] _keyboardImageNamed:@"MMNumberKeyboardDeleteKey.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    [backspaceButton setImage:backspaceImage forState:UIControlStateNormal];
+    [backspaceButton addTarget:self action:@selector(_backspaceRepeat:) forContinuousPressWithTimeInterval:0.15f];
+    buttonDictionary[@(MMNumberKeyboardButtonBackspace)] = backspaceButton;
     
     MMKeyboardButton *decimalPointButton = [[MMKeyboardButton alloc] initWithStyle:MMKeyboardButtonStyleSecondary];
-    
-    NSLocale *locale = self.locale ?: [NSLocale currentLocale];
-    NSString *decimalSeparator = [locale objectForKey:NSLocaleDecimalSeparator];
-    [decimalPointButton setTitle:decimalSeparator ?: @"." forState:UIControlStateNormal];
-    
-    [buttonDictionary setObject:decimalPointButton forKey:@(MMNumberKeyboardButtonDecimalPoint)];
+    NSString *decimalSeparator = [self.locale objectForKey:NSLocaleDecimalSeparator] ?: @".";
+    [decimalPointButton setTitle:decimalSeparator forState:UIControlStateNormal];
+    buttonDictionary[@(MMNumberKeyboardButtonDecimalPoint)] = decimalPointButton;
     
     for (MMKeyboardButton *button in buttonDictionary.objectEnumerator) {
-        [button setExclusiveTouch:YES];
+        button.exclusiveTouch = YES;
         [button addTarget:self action:@selector(_buttonInput:) forControlEvents:UIControlEventTouchUpInside];
         [button addTarget:self action:@selector(_buttonPlayClick:) forControlEvents:UIControlEventTouchDown];
-        
         [self addSubview:button];
     }
     
     UIPanGestureRecognizer *highlightGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(_handleHighlightGestureRecognizer:)];
     [self addGestureRecognizer:highlightGestureRecognizer];
-    
-    if (self.buttonDictionary) {
-        [self.buttonDictionary.allValues makeObjectsPerformSelector:@selector(removeFromSuperview)];
-    }
     
     self.buttonDictionary = buttonDictionary;
 }
@@ -180,9 +155,9 @@ static const CGFloat MMNumberKeyboardPadSpacing = 8.0f;
             BOOL points = CGRectContainsPoint(button.frame, point) && !button.isHidden;
             
             if (gestureRecognizer.state == UIGestureRecognizerStateChanged) {
-                [button setHighlighted:points];
+                button.highlighted = points;
             } else {
-                [button setHighlighted:NO];
+                button.highlighted = NO;
             }
             
             if (gestureRecognizer.state == UIGestureRecognizerStateEnded && points) {
@@ -201,8 +176,8 @@ static const CGFloat MMNumberKeyboardPadSpacing = 8.0f;
 {
     __block MMNumberKeyboardButton keyboardButton = MMNumberKeyboardButtonNone;
     
-    [self.buttonDictionary enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-        MMNumberKeyboardButton k = [key unsignedIntegerValue];
+    [self.buttonDictionary enumerateKeysAndObjectsUsingBlock:^(NSNumber *key, MMKeyboardButton *obj, BOOL *stop) {
+        MMNumberKeyboardButton k = key.unsignedIntegerValue;
         if (button == obj) {
             keyboardButton = k;
             *stop = YES;
@@ -214,8 +189,8 @@ static const CGFloat MMNumberKeyboardPadSpacing = 8.0f;
     }
     
     // Get first responder.
-    id <UIKeyInput> keyInput = self.keyInput;
-    id <MMNumberKeyboardDelegate> delegate = self.delegate;
+    id<UIKeyInput> keyInput = self.keyInput;
+    id<MMNumberKeyboardDelegate> delegate = self.delegate;
     
     if (!keyInput) {
         return;
@@ -268,9 +243,9 @@ static const CGFloat MMNumberKeyboardPadSpacing = 8.0f;
 
 - (void)_backspaceRepeat:(MMKeyboardButton *)button
 {
-    id <UIKeyInput> keyInput = self.keyInput;
+    id<UIKeyInput> keyInput = self.keyInput;
     
-    if (![keyInput hasText]) {
+    if (!keyInput.hasText) {
         return;
     }
     
@@ -280,7 +255,7 @@ static const CGFloat MMNumberKeyboardPadSpacing = 8.0f;
 
 - (id<UIKeyInput>)keyInput
 {
-    id <UIKeyInput> keyInput = _keyInput;
+    id<UIKeyInput> keyInput = _keyInput;
     
     if (!keyInput) {
         keyInput = [UIResponder MM_currentFirstResponder];
@@ -295,12 +270,14 @@ static const CGFloat MMNumberKeyboardPadSpacing = 8.0f;
     
     if (keyInput != _keyInput) {
         if ([_keyInput conformsToProtocol:@protocol(UITextInput)]) {
-            [(id <UITextInput>)_keyInput setInputDelegate:keyInputProxy.previousTextInputDelegate];
+            id<UITextInput> _textInput = (id<UITextInput>)_keyInput;
+            _textInput.inputDelegate = keyInputProxy.previousTextInputDelegate;
         }
         
         if ([keyInput conformsToProtocol:@protocol(UITextInput)]) {
-            keyInputProxy = [MMTextInputDelegateProxy proxyForTextInput:(id <UITextInput>)keyInput delegate:self];
-            [(id <UITextInput>)keyInput setInputDelegate:(id)keyInputProxy];
+            id<UITextInput> textInput = (id<UITextInput>)keyInput;
+            keyInputProxy = [MMTextInputDelegateProxy proxyForTextInput:textInput delegate:self];
+            textInput.inputDelegate = (id)keyInputProxy;
         } else {
             keyInputProxy = nil;
         }
@@ -314,24 +291,24 @@ static const CGFloat MMNumberKeyboardPadSpacing = 8.0f;
 
 #pragma mark - <UITextInputDelegate>
 
-- (void)selectionWillChange:(id <UITextInput>)textInput
+- (void)selectionWillChange:(id<UITextInput>)textInput
 {
     // Intentionally left unimplemented in conformance with <UITextInputDelegate>.
 }
 
-- (void)selectionDidChange:(id <UITextInput>)textInput
+- (void)selectionDidChange:(id<UITextInput>)textInput
 {
     // Intentionally left unimplemented in conformance with <UITextInputDelegate>.
 }
 
-- (void)textWillChange:(id <UITextInput>)textInput
+- (void)textWillChange:(id<UITextInput>)textInput
 {
     // Intentionally left unimplemented in conformance with <UITextInputDelegate>.
 }
 
-- (void)textDidChange:(id <UITextInput>)textInput
+- (void)textDidChange:(id<UITextInput>)textInput
 {
-  // Intentionally left unimplemented in conformance with <UITextInputDelegate>.
+    // Intentionally left unimplemented in conformance with <UITextInputDelegate>.
 }
 
 #pragma mark - Public.
@@ -356,7 +333,8 @@ static const CGFloat MMNumberKeyboardPadSpacing = 8.0f;
 
 #pragma mark - Layout.
 
-NS_INLINE CGRect MMButtonRectMake(CGRect rect, CGRect contentRect, BOOL usesRoundedCorners){
+NS_INLINE CGRect MMButtonRectMake(CGRect rect, CGRect contentRect, BOOL usesRoundedCorners)
+{
     rect = CGRectOffset(rect, contentRect.origin.x, contentRect.origin.y);
     
     if (usesRoundedCorners) {
@@ -377,17 +355,15 @@ NS_INLINE CGRect MMButtonRectMake(CGRect rect, CGRect contentRect, BOOL usesRoun
 {
     [super layoutSubviews];
     
-    CGRect bounds = (CGRect){
+    CGRect bounds = (CGRect) {
         .size = self.bounds.size
     };
     
     UIEdgeInsets insets = UIEdgeInsetsZero;
     
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
     if (@available(iOS 11.0, *)) {
         insets = self.safeAreaInsets;
     }
-#endif
     
     NSDictionary<NSNumber *, MMKeyboardButton *> *buttonDictionary = self.buttonDictionary;
     NSMutableArray<UIView *> *separatorViews = self.separatorViews;
@@ -397,30 +373,30 @@ NS_INLINE CGRect MMButtonRectMake(CGRect rect, CGRect contentRect, BOOL usesRoun
     
     if ([UITraitCollection class]) {
         const BOOL hasMargins = !UIEdgeInsetsEqualToEdgeInsets(insets, UIEdgeInsetsZero);
-        const BOOL isIdiomPad = (self.traitCollection.userInterfaceIdiom == UIUserInterfaceIdiomPad);
+        const BOOL isIdiomPad = self.traitCollection.userInterfaceIdiom == UIUserInterfaceIdiomPad;
         const BOOL systemKeyboardUsesRoundedButtons = self._systemUsesRoundedRectButtonsOnAllInterfaceIdioms;
         
         if (hasMargins || isIdiomPad) {
             usesRoundedButtons = YES;
         } else {
-            const BOOL prefersPlainButtons = (self.preferredStyle == MMNumberKeyboardStylePlainButtons);
-            const BOOL prefersRoundedButtons = (self.preferredStyle == MMNumberKeyboardStyleRoundedButtons);
+            const BOOL prefersPlainButtons = self.preferredStyle == MMNumberKeyboardStylePlainButtons;
+            const BOOL prefersRoundedButtons = self.preferredStyle == MMNumberKeyboardStyleRoundedButtons;
             
             if (!prefersPlainButtons) {
                 usesRoundedButtons = systemKeyboardUsesRoundedButtons || prefersRoundedButtons;
             }
         }
     } else {
-        usesRoundedButtons = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
+        usesRoundedButtons = [UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad;
     }
     
-    const CGFloat spacing = (usesRoundedButtons) ? MMNumberKeyboardPadBorder : 0.0f;
-    const CGFloat maximumWidth = (usesRoundedButtons) ? 400.0f : CGRectGetWidth(bounds);
+    const CGFloat spacing = usesRoundedButtons ? MMNumberKeyboardPadBorder : 0.0f;
+    const CGFloat maximumWidth = usesRoundedButtons ? 400.0f : CGRectGetWidth(bounds);
     const BOOL allowsDecimalPoint = self.allowsDecimalPoint;
     
     const CGFloat width = MIN(maximumWidth, CGRectGetWidth(bounds) - (spacing * 2.0f));
     
-    CGRect contentRect = (CGRect){
+    CGRect contentRect = (CGRect) {
         .origin.x = MMRound((CGRectGetWidth(bounds) - width) / 2.0f),
         .origin.y = spacing,
         .size.width = width,
@@ -445,7 +421,9 @@ NS_INLINE CGRect MMButtonRectMake(CGRect rect, CGRect contentRect, BOOL usesRoun
         MMKeyboardButton *button = buttonDictionary[@(key)];
         NSInteger digit = key - numberMin;
         
-        CGRect rect = (CGRect){ .size = numberSize };
+        CGRect rect = (CGRect) {
+            .size = numberSize
+        };
         
         if (digit == 0) {
             rect.origin.y = numberSize.height * 3;
@@ -453,39 +431,43 @@ NS_INLINE CGRect MMButtonRectMake(CGRect rect, CGRect contentRect, BOOL usesRoun
             
             if (!allowsDecimalPoint) {
                 rect.size.width = numberSize.width * 2.0f;
-                [button setContentEdgeInsets:UIEdgeInsetsMake(0, 0, 0, numberSize.width)];
+                button.contentEdgeInsets = UIEdgeInsetsMake(0, 0, 0, numberSize.width);
             }
             
         } else {
-            NSUInteger idx = (digit - 1);
+            NSUInteger index = digit - 1;
             
-            NSInteger line = idx / numbersPerLine;
-            NSInteger pos = idx % numbersPerLine;
+            NSInteger line = index / numbersPerLine;
+            NSInteger pos = index % numbersPerLine;
             
             rect.origin.y = line * numberSize.height;
             rect.origin.x = pos * numberSize.width;
         }
         
-        [button setFrame:MMButtonRectMake(rect, contentRect, usesRoundedButtons)];
+        button.frame = MMButtonRectMake(rect, contentRect, usesRoundedButtons);
     }
     
     // Layout special key.
     MMKeyboardButton *specialKey = buttonDictionary[@(MMNumberKeyboardButtonDecimalPoint)];
     if (specialKey) {
-        CGRect rect = (CGRect){ .size = numberSize };
+        CGRect rect = (CGRect) {
+            .size = numberSize
+        };
         rect.origin.y = numberSize.height * 3;
         
-        [specialKey setFrame:MMButtonRectMake(rect, contentRect, usesRoundedButtons)];
+        specialKey.frame = MMButtonRectMake(rect, contentRect, usesRoundedButtons);
     }
     
     // Layout decimal point.
     MMKeyboardButton *decimalPointKey = buttonDictionary[@(MMNumberKeyboardButtonBackspace)];
     if (decimalPointKey) {
-        CGRect rect = (CGRect){ .size = numberSize };
+        CGRect rect = (CGRect) {
+            .size = numberSize
+        };
         rect.origin.y = numberSize.height * 3;
         rect.origin.x = numberSize.width * 2;
         
-        [decimalPointKey setFrame:MMButtonRectMake(rect, contentRect, usesRoundedButtons)];
+        decimalPointKey.frame = MMButtonRectMake(rect, contentRect, usesRoundedButtons);
         
         decimalPointKey.hidden = !allowsDecimalPoint;
     }
@@ -499,8 +481,8 @@ NS_INLINE CGRect MMButtonRectMake(CGRect rect, CGRect contentRect, BOOL usesRoun
         const NSUInteger numberOfSeparators = totalColumns + totalRows - 1;
         
         if (separatorViews.count != numberOfSeparators) {
-            const NSUInteger delta = (numberOfSeparators - separatorViews.count);
-            const BOOL removes = (separatorViews.count > numberOfSeparators);
+            const NSUInteger delta = numberOfSeparators - separatorViews.count;
+            const BOOL removes = separatorViews.count > numberOfSeparators;
             if (removes) {
                 NSIndexSet *indexes = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, delta)];
                 [[separatorViews objectsAtIndexes:indexes] makeObjectsPerformSelector:@selector(removeFromSuperview)];
@@ -510,32 +492,29 @@ NS_INLINE CGRect MMButtonRectMake(CGRect rect, CGRect contentRect, BOOL usesRoun
                 
                 NSUInteger separatorsToInsert = delta;
                 while (separatorsToInsert--) {
-                    UIView *separator = [[UIView alloc] initWithFrame:CGRectZero];
-                    separator.backgroundColor = separatorColor;
-                    
-                    [self addSubview:separator];
-                    [separatorViews addObject:separator];
+                    UIView *separatorView = [[UIView alloc] initWithFrame:CGRectZero];
+                    separatorView.backgroundColor = separatorColor;
+                    [self addSubview:separatorView];
+                    [separatorViews addObject:separatorView];
                 }
             }
         }
         
         const CGFloat separatorDimension = 1.0f / (self.window.screen.scale ?: 1.0f);
         
-        [separatorViews enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-            UIView *separator = obj;
-            
+        [separatorViews enumerateObjectsUsingBlock:^(UIView *separatorView, NSUInteger index, BOOL *stop) {
             CGRect rect = CGRectZero;
             
-            if (idx < totalRows) {
-                rect.origin.y = idx * rowHeight;
-                if (idx % 2) {
+            if (index < totalRows) {
+                rect.origin.y = index * rowHeight;
+                if (index % 2) {
                     rect.size.width = CGRectGetWidth(contentRect) - columnWidth;
                 } else {
                     rect.size.width = CGRectGetWidth(contentRect);
                 }
                 rect.size.height = separatorDimension;
             } else {
-                NSInteger col = (idx - totalRows);
+                NSInteger col = index - totalRows;
                 
                 rect.origin.x = (col + 1) * columnWidth;
                 rect.size.width = separatorDimension;
@@ -547,7 +526,7 @@ NS_INLINE CGRect MMButtonRectMake(CGRect rect, CGRect contentRect, BOOL usesRoun
                 }
             }
             
-            [separator setFrame:MMButtonRectMake(rect, contentRect, usesRoundedButtons)];
+            separatorView.frame = MMButtonRectMake(rect, contentRect, usesRoundedButtons);
         }];
     } else {
         [separatorViews makeObjectsPerformSelector:@selector(removeFromSuperview)];
@@ -561,8 +540,7 @@ NS_INLINE CGRect MMButtonRectMake(CGRect rect, CGRect contentRect, BOOL usesRoun
 
 - (CGSize)sizeThatFits:(CGSize)size
 {
-    const UIUserInterfaceIdiom interfaceIdiom = UI_USER_INTERFACE_IDIOM();
-    const CGFloat spacing = (interfaceIdiom == UIUserInterfaceIdiomPad) ? MMNumberKeyboardPadBorder : 0.0f;
+    const CGFloat spacing = [UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad ? MMNumberKeyboardPadBorder : 0.0f;
     
     size.height = MMNumberKeyboardRowHeight * MMNumberKeyboardRows + (spacing * 2.0f);
     
@@ -584,8 +562,8 @@ NS_INLINE CGRect MMButtonRectMake(CGRect rect, CGRect contentRect, BOOL usesRoun
 
 + (UIImage *)_keyboardImageNamed:(NSString *)name
 {
-    NSString *resource = [name stringByDeletingPathExtension];
-    NSString *extension = [name pathExtension];
+    NSString *resource = name.stringByDeletingPathExtension;
+    NSString *extension = name.pathExtension;
     
     if (!resource.length) {
         return nil;
@@ -608,7 +586,7 @@ NS_INLINE CGRect MMButtonRectMake(CGRect rect, CGRect contentRect, BOOL usesRoun
     static BOOL usesRoundedRectButtons;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        usesRoundedRectButtons = ([[[UIDevice currentDevice] systemVersion] compare:@"11.0" options:NSNumericSearch] != NSOrderedAscending);
+        usesRoundedRectButtons = [[UIDevice currentDevice].systemVersion compare:@"11.0" options:NSNumericSearch] != NSOrderedAscending;
     });
     return usesRoundedRectButtons;
 }

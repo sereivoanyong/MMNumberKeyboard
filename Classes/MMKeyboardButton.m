@@ -11,9 +11,9 @@
 
 @interface MMKeyboardButton ()
 
-@property (strong, nonatomic) NSTimer *continuousPressTimer;
-@property (assign, nonatomic) NSTimeInterval continuousPressTimeInterval;
-@property (strong, nonatomic) MMKeyboardTheme *theme;
+@property (nonatomic, strong) NSTimer *continuousPressTimer;
+@property (nonatomic, assign) NSTimeInterval continuousPressTimeInterval;
+@property (nonatomic, strong) MMKeyboardTheme *theme;
 
 @end
 
