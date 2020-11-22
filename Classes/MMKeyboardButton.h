@@ -12,6 +12,21 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /**
+ *  Specifies the style of a keyboard button.
+ */
+typedef NS_ENUM(NSUInteger, MMKeyboardButtonStyle) {
+    /**
+    *  A primary style button, such as those for the number keys.
+    */
+    MMKeyboardButtonStylePrimary,
+    
+    /**
+    *  A secondary style button, such as the decimal point key and the backspace key.
+    */
+    MMKeyboardButtonStyleSecondary,
+};
+
+/**
  *  The custom button class used on @c MMNumberKeyboard.
  */
 @interface MMKeyboardButton : UIButton
@@ -25,14 +40,14 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @returns An initialized view object or @c nil if the view could not be initialized.
  */
-+ (instancetype)keyboardButtonWithStyle:(MMNumberKeyboardButtonStyle)style;
++ (instancetype)keyboardButtonWithStyle:(MMKeyboardButtonStyle)style;
 
 /**
  *  The style of the button.
  *
- *  @note The default value of this property is @c MMNumberKeyboardButtonStyleWhite.
+ *  @note The default value of this property is @c MMKeyboardButtonStylePrimary.
  */
-@property (assign, nonatomic) MMNumberKeyboardButtonStyle style;
+@property (assign, nonatomic) MMKeyboardButtonStyle style;
 
 /**
  *  Determines whether the button has a rounded corners or not.

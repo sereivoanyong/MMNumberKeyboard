@@ -19,7 +19,7 @@
 
 @implementation MMKeyboardButton
 
-+ (instancetype)keyboardButtonWithStyle:(MMNumberKeyboardButtonStyle)style
++ (instancetype)keyboardButtonWithStyle:(MMKeyboardButtonStyle)style
 {
     MMKeyboardButton *button = [self buttonWithType:UIButtonTypeCustom];
     button.style = style;
@@ -36,7 +36,7 @@
     return self;
 }
 
-- (void)setStyle:(MMNumberKeyboardButtonStyle)style
+- (void)setStyle:(MMKeyboardButtonStyle)style
 {
     if (style != _style) {
         _style = style;

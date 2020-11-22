@@ -66,21 +66,6 @@ typedef NS_ENUM(NSUInteger, MMNumberKeyboardStyle) {
 };
 
 /**
- *  Specifies the style of a keyboard button.
- */
-typedef NS_ENUM(NSUInteger, MMNumberKeyboardButtonStyle) {
-    /**
-    *  A primary style button, such as those for the number keys.
-    */
-    MMNumberKeyboardButtonStylePrimary,
-    
-    /**
-    *  A secondary style button, such as the backspace key.
-    */
-    MMNumberKeyboardButtonStyleSecondary,
-};
-
-/**
  *  A simple keyboard to use with numbers and, optionally, a decimal point.
  */
 @interface MMNumberKeyboard : UIInputView

@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "MMNumberKeyboard.h"
+#import "MMKeyboardButton.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -23,7 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @returns An initialized theme object.
  */
-+ (instancetype)themeForStyle:(MMNumberKeyboardButtonStyle)style;
++ (instancetype)themeForStyle:(MMKeyboardButtonStyle)style;
 
 /**
  *  The fill color for the buttons.

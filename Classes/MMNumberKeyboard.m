@@ -125,7 +125,7 @@ static const CGFloat MMNumberKeyboardPadSpacing = 8.0f;
     });
     
     for (MMNumberKeyboardButton key = numberMin; key < numberMax; key++) {
-        MMKeyboardButton *button = [MMKeyboardButton keyboardButtonWithStyle:MMNumberKeyboardButtonStylePrimary];
+        MMKeyboardButton *button = [MMKeyboardButton keyboardButtonWithStyle:MMKeyboardButtonStylePrimary];
         NSString *title = @(key - numberMin).stringValue;
         
         [button setTitle:title forState:UIControlStateNormal];
@@ -136,14 +136,14 @@ static const CGFloat MMNumberKeyboardPadSpacing = 8.0f;
     
     UIImage *backspaceImage = [self.class _keyboardImageNamed:@"MMNumberKeyboardDeleteKey.png"];
     
-    MMKeyboardButton *backspaceButton = [MMKeyboardButton keyboardButtonWithStyle:MMNumberKeyboardButtonStyleSecondary];
+    MMKeyboardButton *backspaceButton = [MMKeyboardButton keyboardButtonWithStyle:MMKeyboardButtonStyleSecondary];
     [backspaceButton setImage:[backspaceImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
     
     [(MMKeyboardButton *)backspaceButton addTarget:self action:@selector(_backspaceRepeat:) forContinuousPressWithTimeInterval:0.15f];
     
     [buttonDictionary setObject:backspaceButton forKey:@(MMNumberKeyboardButtonBackspace)];
     
-    MMKeyboardButton *decimalPointButton = [MMKeyboardButton keyboardButtonWithStyle:MMNumberKeyboardButtonStyleSecondary];
+    MMKeyboardButton *decimalPointButton = [MMKeyboardButton keyboardButtonWithStyle:MMKeyboardButtonStyleSecondary];
     
     NSLocale *locale = self.locale ?: [NSLocale currentLocale];
     NSString *decimalSeparator = [locale objectForKey:NSLocaleDecimalSeparator];

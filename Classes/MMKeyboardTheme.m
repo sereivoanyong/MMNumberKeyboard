@@ -26,7 +26,7 @@
     return self;
 }
 
-+ (instancetype)themeForStyle:(MMNumberKeyboardButtonStyle)style
++ (instancetype)themeForStyle:(MMKeyboardButtonStyle)style
 {
     static MMKeyboardTheme *primaryStyleTheme;
     static MMKeyboardTheme *secondaryStyleTheme;
@@ -52,10 +52,10 @@
     MMKeyboardTheme *theme = nil;
     
     switch (style) {
-        case MMNumberKeyboardButtonStylePrimary:
+        case MMKeyboardButtonStylePrimary:
             theme = primaryStyleTheme;
             break;
-        case MMNumberKeyboardButtonStyleSecondary:
+        case MMKeyboardButtonStyleSecondary:
             theme = secondaryStyleTheme;
             break;
         default:
