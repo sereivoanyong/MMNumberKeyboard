@@ -23,7 +23,8 @@
     
     // Create and configure the keyboard.
     MMNumberKeyboardView *keyboardView = [[MMNumberKeyboardView alloc] initWithFrame:CGRectZero];
-    keyboardView.allowsDecimalPoint = YES;
+    keyboardView.showsDecimalSeparatorKey = YES;
+    keyboardView.preferredStyle = MMNumberKeyboardViewStylePlainButtons;
     keyboardView.delegate = self;
     
     // Configure an example UITextField.

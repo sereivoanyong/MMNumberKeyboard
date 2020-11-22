@@ -83,11 +83,11 @@ NS_SWIFT_NAME(NumberKeyboardView)
 @property (nonatomic, strong, null_resettable) NSLocale *locale;
 
 /**
- *  If @c YES, the decimal separator key will be displayed.
+ *  If @c YES, the decimal separator key will be showned.
  *
  *  @note The default value of this property is @c NO.
  */
-@property (nonatomic, assign) BOOL allowsDecimalPoint;
+@property (nonatomic, assign) BOOL showsDecimalSeparatorKey;
 
 /**
  *  The preferred keyboard style.
