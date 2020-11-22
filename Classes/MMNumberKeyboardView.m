@@ -229,6 +229,15 @@ static const CGFloat MMNumberKeyboardPadSpacing = 8.0f;
     // Handle .
     else if (keyboardButton == MMNumberKeyboardButtonDecimalPoint) {
         NSString *decimalText = [button titleForState:UIControlStateNormal];
+        if ([keyInput conformsToProtocol:@protocol(UITextInput)]) {
+            id<UITextInput> textInput = (id<UITextInput>)keyInput;
+            UITextRange *documentTextRange = [textInput textRangeFromPosition:textInput.beginningOfDocument toPosition:textInput.endOfDocument];
+            NSString *documentText = [textInput textInRange:documentTextRange];
+            if ([documentText containsString:decimalText]) {
+                return;
+            }
+        }
+        
         if ([delegate respondsToSelector:@selector(numberKeyboardView:shouldInsertText:)]) {
             BOOL shouldInsert = [delegate numberKeyboardView:self shouldInsertText:decimalText];
             if (!shouldInsert) {

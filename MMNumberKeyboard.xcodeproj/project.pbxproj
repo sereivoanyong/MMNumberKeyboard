@@ -10,12 +10,12 @@
 		5A6842E822FDFE02007180AB /* MMTextInputDelegateProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A6842DE22FDFE01007180AB /* MMTextInputDelegateProxy.m */; };
 		5A6842E922FDFE02007180AB /* MMKeyButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 5A6842DF22FDFE01007180AB /* MMKeyButton.h */; };
 		5A6842EA22FDFE02007180AB /* MMKeyButtonTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A6842E022FDFE01007180AB /* MMKeyButtonTheme.m */; };
-		5A6842EB22FDFE02007180AB /* MMNumberKeyboard.h in Headers */ = {isa = PBXBuildFile; fileRef = 5A6842E122FDFE01007180AB /* MMNumberKeyboard.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		5A6842EB22FDFE02007180AB /* MMNumberKeyboardView.h in Headers */ = {isa = PBXBuildFile; fileRef = 5A6842E122FDFE01007180AB /* MMNumberKeyboardView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5A6842EC22FDFE02007180AB /* MMTextInputDelegateProxy.h in Headers */ = {isa = PBXBuildFile; fileRef = 5A6842E222FDFE01007180AB /* MMTextInputDelegateProxy.h */; };
 		5A6842ED22FDFE02007180AB /* MMKeyButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A6842E322FDFE01007180AB /* MMKeyButton.m */; };
 		5A6842EE22FDFE02007180AB /* UIColor+MMNumberKeyboardAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A6842E422FDFE01007180AB /* UIColor+MMNumberKeyboardAdditions.m */; };
 		5A6842EF22FDFE02007180AB /* MMKeyButtonTheme.h in Headers */ = {isa = PBXBuildFile; fileRef = 5A6842E522FDFE01007180AB /* MMKeyButtonTheme.h */; };
-		5A6842F022FDFE02007180AB /* MMNumberKeyboard.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A6842E622FDFE01007180AB /* MMNumberKeyboard.m */; };
+		5A6842F022FDFE02007180AB /* MMNumberKeyboardView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A6842E622FDFE01007180AB /* MMNumberKeyboardView.m */; };
 		5A6842F122FDFE02007180AB /* UIColor+MMNumberKeyboardAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5A6842E722FDFE01007180AB /* UIColor+MMNumberKeyboardAdditions.h */; };
 		A47B5ACD254C5F8200590783 /* MMNumberKeyboardDeleteKey@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A47B5AC7254C5F8200590783 /* MMNumberKeyboardDeleteKey@3x.png */; };
 		A47B5ACE254C5F8200590783 /* MMNumberKeyboardDeleteKey@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A47B5AC8254C5F8200590783 /* MMNumberKeyboardDeleteKey@2x.png */; };
@@ -26,12 +26,12 @@
 		5A6842DE22FDFE01007180AB /* MMTextInputDelegateProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMTextInputDelegateProxy.m; path = Classes/MMTextInputDelegateProxy.m; sourceTree = SOURCE_ROOT; };
 		5A6842DF22FDFE01007180AB /* MMKeyButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMKeyButton.h; path = Classes/MMKeyButton.h; sourceTree = SOURCE_ROOT; };
 		5A6842E022FDFE01007180AB /* MMKeyButtonTheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMKeyButtonTheme.m; path = Classes/MMKeyButtonTheme.m; sourceTree = SOURCE_ROOT; };
-		5A6842E122FDFE01007180AB /* MMNumberKeyboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMNumberKeyboard.h; path = Classes/MMNumberKeyboard.h; sourceTree = SOURCE_ROOT; };
+		5A6842E122FDFE01007180AB /* MMNumberKeyboardView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMNumberKeyboardView.h; path = Classes/MMNumberKeyboardView.h; sourceTree = SOURCE_ROOT; };
 		5A6842E222FDFE01007180AB /* MMTextInputDelegateProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMTextInputDelegateProxy.h; path = Classes/MMTextInputDelegateProxy.h; sourceTree = SOURCE_ROOT; };
 		5A6842E322FDFE01007180AB /* MMKeyButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMKeyButton.m; path = Classes/MMKeyButton.m; sourceTree = SOURCE_ROOT; };
 		5A6842E422FDFE01007180AB /* UIColor+MMNumberKeyboardAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIColor+MMNumberKeyboardAdditions.m"; path = "Classes/UIColor+MMNumberKeyboardAdditions.m"; sourceTree = SOURCE_ROOT; };
 		5A6842E522FDFE01007180AB /* MMKeyButtonTheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMKeyButtonTheme.h; path = Classes/MMKeyButtonTheme.h; sourceTree = SOURCE_ROOT; };
-		5A6842E622FDFE01007180AB /* MMNumberKeyboard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMNumberKeyboard.m; path = Classes/MMNumberKeyboard.m; sourceTree = SOURCE_ROOT; };
+		5A6842E622FDFE01007180AB /* MMNumberKeyboardView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMNumberKeyboardView.m; path = Classes/MMNumberKeyboardView.m; sourceTree = SOURCE_ROOT; };
 		5A6842E722FDFE01007180AB /* UIColor+MMNumberKeyboardAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIColor+MMNumberKeyboardAdditions.h"; path = "Classes/UIColor+MMNumberKeyboardAdditions.h"; sourceTree = SOURCE_ROOT; };
 		A47B5AC7254C5F8200590783 /* MMNumberKeyboardDeleteKey@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MMNumberKeyboardDeleteKey@3x.png"; sourceTree = "<group>"; };
 		A47B5AC8254C5F8200590783 /* MMNumberKeyboardDeleteKey@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MMNumberKeyboardDeleteKey@2x.png"; sourceTree = "<group>"; };
@@ -86,8 +86,8 @@
 				5A6842E322FDFE01007180AB /* MMKeyButton.m */,
 				5A6842E522FDFE01007180AB /* MMKeyButtonTheme.h */,
 				5A6842E022FDFE01007180AB /* MMKeyButtonTheme.m */,
-				5A6842E122FDFE01007180AB /* MMNumberKeyboard.h */,
-				5A6842E622FDFE01007180AB /* MMNumberKeyboard.m */,
+				5A6842E122FDFE01007180AB /* MMNumberKeyboardView.h */,
+				5A6842E622FDFE01007180AB /* MMNumberKeyboardView.m */,
 				5A6842E222FDFE01007180AB /* MMTextInputDelegateProxy.h */,
 				5A6842DE22FDFE01007180AB /* MMTextInputDelegateProxy.m */,
 				5A6842E722FDFE01007180AB /* UIColor+MMNumberKeyboardAdditions.h */,
@@ -103,7 +103,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5A6842EB22FDFE02007180AB /* MMNumberKeyboard.h in Headers */,
+				5A6842EB22FDFE02007180AB /* MMNumberKeyboardView.h in Headers */,
 				5A6842F122FDFE02007180AB /* UIColor+MMNumberKeyboardAdditions.h in Headers */,
 				5A6842EC22FDFE02007180AB /* MMTextInputDelegateProxy.h in Headers */,
 				5A6842E922FDFE02007180AB /* MMKeyButton.h in Headers */,
@@ -184,7 +184,7 @@
 			files = (
 				5A6842ED22FDFE02007180AB /* MMKeyButton.m in Sources */,
 				5A6842E822FDFE02007180AB /* MMTextInputDelegateProxy.m in Sources */,
-				5A6842F022FDFE02007180AB /* MMNumberKeyboard.m in Sources */,
+				5A6842F022FDFE02007180AB /* MMNumberKeyboardView.m in Sources */,
 				5A6842EA22FDFE02007180AB /* MMKeyButtonTheme.m in Sources */,
 				5A6842EE22FDFE02007180AB /* UIColor+MMNumberKeyboardAdditions.m in Sources */,
 			);
