@@ -45,8 +45,8 @@
         
         // Secondary:
         secondaryStyleTheme = [[self alloc] init];
-        secondaryStyleTheme->_fillColor = [backgroundColorSecondary MM_colorWithDarkColor:darkBackgroundSecondary];
-        secondaryStyleTheme->_highlightedFillColor = [backgroundColorPrimary MM_colorWithDarkColor:darkBackgroundPrimary];
+        secondaryStyleTheme->_fillColor = [UIColor clearColor];
+        secondaryStyleTheme->_highlightedFillColor = [UIColor clearColor];
     });
     
     MMKeyboardTheme *theme = nil;

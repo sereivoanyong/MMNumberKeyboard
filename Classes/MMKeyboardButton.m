@@ -78,7 +78,7 @@
     } else {
         if (self.isHighlighted || self.isSelected) {
             self.backgroundColor = theme.highlightedFillColor;
-            self.imageView.tintColor = theme.controlColor;
+            self.imageView.tintColor = theme.highlightedControlColor;
         } else {
             self.backgroundColor = theme.fillColor;
             self.imageView.tintColor = theme.controlColor;
@@ -87,15 +87,19 @@
     
     static const CGFloat radius = 4.0f;
     
-    CALayer *buttonLayer = [self layer];
-    buttonLayer.cornerRadius = (isRounded) ? radius : 0.0f;
-    if (@available(iOS 13.0, *)) {
-        buttonLayer.cornerCurve = kCACornerCurveContinuous;
+    if (theme.fillColor != [UIColor clearColor]) {
+        CALayer *buttonLayer = self.layer;
+        buttonLayer.cornerRadius = (isRounded) ? radius : 0.0f;
+        if (@available(iOS 13.0, *)) {
+            buttonLayer.cornerCurve = kCACornerCurveContinuous;
+        }
+        buttonLayer.shadowOpacity = (isRounded) ? 1.0f : 0.0f;
+        buttonLayer.shadowColor = theme.shadowColor.CGColor;
+        buttonLayer.shadowOffset = CGSizeMake(0, 1.0f);
+        buttonLayer.shadowRadius = 0.0f;
+        buttonLayer.rasterizationScale = [UIScreen mainScreen].scale;
+        buttonLayer.shouldRasterize = YES;
     }
-    buttonLayer.shadowOpacity = (isRounded) ? 1.0f : 0.0f;
-    buttonLayer.shadowColor = theme.shadowColor.CGColor;
-    buttonLayer.shadowOffset = CGSizeMake(0, 1.0f);
-    buttonLayer.shadowRadius = 0.0f;
     
     UIColor *controlColor = theme.controlColor;
     UIColor *highlightedControlColor = theme.highlightedControlColor;
